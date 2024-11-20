@@ -80,3 +80,61 @@ void AprokectGameMode::GetAllActorData()
         UE_LOG(LogTemp, Log, Text("Actot Name: %S, CLass %S, Location %s"), *ActorName, *ActorClass, *ActorLocation.ToString());
     }
 }
+
+void AprojectGameMode::GetPlayerData()
+{
+    // Same as GetActors with some modifications
+    UWorld*World = GetWorld();
+    if (!World)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("World context is invalid!"));
+        return;
+    }
+    
+    /*
+     Difference between APlayerCotnroller and APawn:
+     - APlayerController is responsible for handling player input
+     and directing the player's actions. Its the brain that interprets input and sends commands to the controlled object which is the pawn here.
+     - APawn : is the physical entity in the game world that the player can control. Its basically the body that exists in the world and carries out actions based on commands from hte PlayerController.
+     */
+    
+    /* get the player controller (single player):
+     
+     PlayerCtronoller is a class responsible for handling player inout and controlling the player's pawn.
+     World->GetFirstController() --> retrieves the first player controller in the world. This assumes a single-player environment.
+    */
+    APlayerController* PlayerController = World->GetFirstPlayerController();
+    if (!PlayerController)
+    {
+        UE_LOG(LogTemp, Warning, Text("Player controller not found"))
+        return;
+    }
+    
+    /* get the controller pawn:
+     
+     PlayerPawn refers to the body in the game (player).
+     PlayerController->GetPawn() : gets the pawn
+     */
+    
+    APawn* PlayerPawn = PlayerController->GetPawn();
+    if (!PlayerPawn)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Playerpawn not found"))
+        return;
+    }
+    
+    /* Player specific data:
+     
+     PlayerName - the name of the player stored in FString. to identify the player
+     PlayerLocation - the location of the player, stored in FVector
+     PlayerClass - gets the pawn class. dont know if this is nessecary yet.
+     
+     */
+    FString PlayerName = PlayerPawn->GetName();
+    FVector PlayerLocation = PlayerPawn->GetActorLocation();
+    FString PlayerClass = PlayerPawn->GetClass()->GetName();
+    
+    // Log the player data
+    UE_LOG(LogTemp, Log, TEXT("Player Name: %s, Class: %s, Location: %s"),
+        *PlayerName, *PlayerClass, *PlayerLocation.ToString());
+}
