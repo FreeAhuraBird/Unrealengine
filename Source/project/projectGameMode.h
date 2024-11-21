@@ -9,7 +9,8 @@
 UCLASS(minimalapi)
 class AprojectGameMode : public AGameModeBase
 {
-	GENERATED_BODY() // Constructor (the class function which is automatically called when the an object of the class is created.
+	GENERATED_BODY() 
+		// Constructor (the class function which is automatically called when the an object of the class is created.
     // its primary function is to initialize the object - set up default values and allocate resources, and prepare it for use.
 
 public:
@@ -29,3 +30,6 @@ protected:
 
 
  
+
+
+

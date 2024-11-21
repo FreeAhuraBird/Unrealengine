@@ -5,6 +5,18 @@
 #include "UObject/ConstructorHelpers.h"
 #include "GameFramework/Actor.h"
 #include "EngineUtils.h"
+#include "Serialization/JsonWriter.h"
+#include "Serialization/JsonSerializer.h"
+
+/*
+    Why I've written the json-converter in the GameMode script:
+    - Here we can collect data about all actors and player in the game world.
+    - We can easily use this data and convert it into a json-format
+    - Easily log the json data to the UE console for testing
+
+    JsonWriter.h - has FJsonObject (UE's own json object representation)
+    JsonSerializer.h - provides functions for loading to json string
+*/
 
 AprojectGameMode::AprojectGameMode()
     : Super() // super() is part of C++ constructor initialzation, specifically for calling the constructor of the parent (or base) class.
@@ -18,14 +30,22 @@ AprojectGameMode::AprojectGameMode()
 
 void AprojectGameMode::BeginPlay()
 {
+    /*
+        BeginPlay() - is called when the game starts or when this game mode is first activated.
+        GetAllActordata() - function to gather data about all actors in the game world
+        GetPlayerData() - also custom function to gather data bout the player
+        GenerateJSON() - A customer function that collects the data and formats it as a JSON string
+    */
     Super::BeginPlay();
 
-    // collect all actor data
     GetAllActorData();
-
-    // collect player-specific data
     GetPlayerData();
+
+    // Export to JSON
+    FString JSONString = GenerateJSON();
+    UE_LOG(LogTemp, Log, TEXT("Generated JSON: %s"), *JSONString); // log for testing and debugging
 }
+
 
 void AprojectGameMode::GetAllActorData()
 {
@@ -136,4 +156,64 @@ void AprojectGameMode::GetPlayerData()
     // Log the player data
     UE_LOG(LogTemp, Log, TEXT("Player Name: %s, Class: %s, Location: %s"),
         *PlayerName, *PlayerClass, *PlayerLocation.ToString());
+}
+
+FString AprojectGameMode::GenerateJSON()
+{
+    /*
+        Root JSON Object - creates the root object to hold all data
+        Actors Data - Iterates through actors, creating a JSON object for each actor and adding it to an arrya
+        Player data - Creates json object for the player and adds it to the root object
+        Serialize to string - converts the json object into a string using UE's serializer
+    */
+    TSharedPtr<FJsonObject> RootObject = MakeShareable(new FJsonObject());
+    TArray<TSharedPtr<FJsonValue>> ActorsArray;
+
+    // Actor Data
+    UWorld* World = GetWorld();
+
+    if (World)
+    {
+        for (TActorIterator<AActor> ActorItr(World); ActorItr; ++ActorItr)
+        {
+            AActor* Actor = *ActorItr;
+
+            /*
+                FJsonObject - represents a JSON object in ue. can be used to create or parse json objects
+                TSharedPtr<FJsonObject> - A shared pointer used for handling FJsonObject instances
+            */
+            TSharedPtr<FJsonObject> ActorObject = MakeShareable(new FJsonObject());
+
+            ActorObject->SetStringField(TEXT("Name"), Actor->GetName());
+            ActorObject->SetStringField(TEXT("Class"), Actor->GetClass()->GetName());
+            ActorObject->SetStringField(TEXT("Location"), Actor->GetActorLocation().ToString());
+
+            ActorsArray.Add(MakeShareable(new FJsonValueObject(ActorObject)));
+        }
+        RootObject->SetArrayField(TEXT("Actor"), ActorsArray);
+
+        // Player data
+        TSharedPtr<FJsonObject> PlayerObject = MakeShareable(new FJsonObject());
+    }
+
+    // Player Data
+    TSharedPtr<FJsonObject> PlayerObject = MakeShareable(new FJsonObject());
+    APlayerController* PlayerController = World ? World->GetFirstPlayerController() : nullptr;
+    if (PlayerController)
+    {
+        APawn* PlayerPawn = PlayerController->GetPawn();
+        if (PlayerPawn)
+        {
+            // Create a JSON object for the player
+            PlayerObject->SetStringField(TEXT("Name"), PlayerPawn->GetName());
+            PlayerObject->SetStringField(TEXT("Class"), PlayerPawn->GetClass()->GetName());
+            PlayerObject->SetStringField(TEXT("Location"), PlayerPawn->GetActorLocation().ToString());
+        }
+    }
+    RootObject->SetObjectField(TEXT("Player"), PlayerObject);
+
+    // Serialize thenJSON object into a string
+    FString JSONString;
+    TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&JSONString);
+    FJsonSerializer::Serialize(RootObject.ToSharedRef(), Writer);
 }
