@@ -38,124 +38,9 @@ void AprojectGameMode::BeginPlay()
     */
     Super::BeginPlay();
 
-    GetAllActorData();
-    GetPlayerData();
-
     // Export to JSON
     FString JSONString = GenerateJSON();
     UE_LOG(LogTemp, Log, TEXT("Generated JSON: %s"), *JSONString); // log for testing and debugging
-}
-
-
-void AprojectGameMode::GetAllActorData()
-{
-    //UWorld is UE's class representing the game world. A pointer is
-    // used becuase GetWorld() returns a pointer to the current world object
-    //Get World() ==> gets the current game world where all actors exist
-    UWorld* World = GetWorld();
-
-    /*
-     if World is null or not valid, the function is stopped
-     */
-    if (!World)
-    {
-        // LogTemp is a temporary log category for general messages
-        // why warning: to make the log more clear
-        UE_LOG(LogTemp, Warning, TEXT("World context is invalid"));
-        return; // exit function to prevent crash
-    }
-
-    /*
-     iterate thorugh all actors in the world:
-     - TActoriterator<AActor> is a UE iterator used to loop through
-     all actors of a specified type. here its AActor
-     AActor => The base class for all objects that can exist in the
-     game world.
-
-     ActorItr(World) => Initializes the iterator to work with the
-     provided World. It will iterate through all actors in that world.
-
-     Iteration is done in the for looop below:
-     */
-    for (TActorIterator<AActor> ActorItr(World); ActorItr; ++ActorItr)
-    {
-        /* Below we use a pointer to the current actor being iterated.
-         *ActorItr - dereferences the iterator to access the actual
-         actor object
-         */
-        AActor* Actor = *ActorItr;
-
-        /*Get actor name and location:
-
-         ActorName: Retrieves the name of the actor as a Fstring
-         ActorLocation: Returns the actors location in world space as an FVector (3d coordinate with x, y, z)
-         ActorClass: Returns the UClass of the actor, which is its type (for ex, StaticMeshActor or PointLight)
-         */
-        FString ActorName = Actor->GetName();
-        FVector ActorLocation = Actor->GetActorLocation();
-        FString ActorClass = Actor->GetClass()->GetName();
-
-        // log the actor data for test?
-        UE_LOG(LogTemp, Log, TEXT("Actor Name: %s, CLass %s, Location %s"), *ActorName, *ActorClass, *ActorLocation.ToString());
-    }
-}
-
-void AprojectGameMode::GetPlayerData()
-{
-    // Same as GetActors with some modifications
-    UWorld* World = GetWorld();
-    if (!World)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("World context is invalid!"));
-        return;
-    }
-
-    /*
-     Difference between APlayerCotnroller and APawn:
-     - APlayerController is responsible for handling player input
-     and directing the player's actions. Its the brain that interprets input and sends commands to the controlled object which is the pawn here.
-     - APawn : is the physical entity in the game world that the player can control. Its basically the body that exists in the world and carries out actions based on commands from hte PlayerController.
-     */
-
-     /* get the player controller (single player):
-
-      PlayerCtronoller is a class responsible for handling player inout and controlling the player's pawn.
-      World->GetFirstController() --> retrieves the first player controller in the world. This assumes a single-player environment.
-     */
-    APlayerController* PlayerController = World->GetFirstPlayerController();
-    if (!PlayerController)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Player controller not found"));
-        return;
-    }
-
-    /* get the controller pawn:
-
-     PlayerPawn refers to the body in the game (player).
-     PlayerController->GetPawn() : gets the pawn
-     */
-
-    APawn* PlayerPawn = PlayerController->GetPawn();
-    if (!PlayerPawn)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Playerpawn not found"));
-        return;
-    }
-
-    /* Player specific data:
-
-     PlayerName - the name of the player stored in FString. to identify the player
-     PlayerLocation - the location of the player, stored in FVector
-     PlayerClass - gets the pawn class. dont know if this is nessecary yet.
-
-     */
-    FString PlayerName = PlayerPawn->GetName();
-    FVector PlayerLocation = PlayerPawn->GetActorLocation();
-    FString PlayerClass = PlayerPawn->GetClass()->GetName();
-
-    // Log the player data
-    UE_LOG(LogTemp, Log, TEXT("Player Name: %s, Class: %s, Location: %s"),
-        *PlayerName, *PlayerClass, *PlayerLocation.ToString());
 }
 
 FString AprojectGameMode::GenerateJSON()
@@ -169,6 +54,8 @@ FString AprojectGameMode::GenerateJSON()
     */
     TSharedPtr<FJsonObject> RootObject = MakeShareable(new FJsonObject());
     TArray<TSharedPtr<FJsonValue>> ActorsArray;
+    TArray<TSharedPtr<FJsonValue>> LightingArray;
+    TArray<TSharedPtr<FJsonValue>> GameplayArray;
 
     // Actor Data
     UWorld* World = GetWorld();
@@ -183,18 +70,49 @@ FString AprojectGameMode::GenerateJSON()
                 FJsonObject - represents a JSON object in ue. can be used to create or parse json objects
                 TSharedPtr<FJsonObject> - A shared pointer used for handling FJsonObject instances
             */
+
+            // new json object for each actor
             TSharedPtr<FJsonObject> ActorObject = MakeShareable(new FJsonObject());
 
+            // basic variables
             ActorObject->SetStringField(TEXT("Name"), Actor->GetName());
             ActorObject->SetStringField(TEXT("Class"), Actor->GetClass()->GetName());
-            ActorObject->SetStringField(TEXT("Location"), Actor->GetActorLocation().ToString());
 
-            ActorsArray.Add(MakeShareable(new FJsonValueObject(ActorObject)));
+            // location nested object (easier for LLM to understand than using string):
+            TSharedPtr<FJsonObject> LocationObject = MakeShareable(new FJsonObject());
+            FVector ActorLocation = Actor->GetActorLocation();
+            LocationObject->SetNumberField(TEXT("X"), ActorLocation.X);
+            LocationObject->SetNumberField(TEXT("Y"), ActorLocation.Y);
+            LocationObject->SetNumberField(TEXT("Z"), ActorLocation.Z);
+            ActorObject->SetObjectField(TEXT("Location"), LocationObject);
+
+            TArray<TSharedPtr<FJsonValue>> TagsArray;
+
+            // categorize / tags
+            if (Actor->GetClass()->GetName() == TEXT("SkyLight"))
+            {
+                TagsArray.Add(MakeShareable(new FJsonValueString(TEXT("Environment"))));
+                TagsArray.Add(MakeShareable(new FJsonValueString(TEXT("Lighting"))));
+                LightingArray.Add(MakeShareable(new FJsonValueObject(ActorObject)));
+            }
+            else if (Actor->GetClass()->GetName() == TEXT("PlayerStart"))
+            {
+                TagsArray.Add(MakeShareable(new FJsonValueString(TEXT("Gameplay"))));
+                TagsArray.Add(MakeShareable(new FJsonValueString(TEXT("Spawn"))));
+                ActorObject->SetStringField(TEXT("Role"), TEXT("Spawn Point"));
+                GameplayArray.Add(MakeShareable(new FJsonValueObject(ActorObject)));
+            }
+            else
+            {
+                TagsArray.Add(MakeShareable(new FJsonValueString(TEXT("Actor"))));
+                ActorsArray.Add(MakeShareable(new FJsonValueObject(ActorObject)));
+            }
+            ActorObject->SetArrayField(TEXT("Tags"), TagsArray);
         }
-        RootObject->SetArrayField(TEXT("Actor"), ActorsArray);
-
-        // Player data
-        TSharedPtr<FJsonObject> PlayerObject = MakeShareable(new FJsonObject());
+        // add to rootobject
+        RootObject->SetArrayField(TEXT("Actors"), ActorsArray);
+        RootObject->SetArrayField(TEXT("Lighting"), LightingArray);
+        RootObject->SetArrayField(TEXT("Gameplay"), GameplayArray);
     }
 
     // Player Data
@@ -208,7 +126,25 @@ FString AprojectGameMode::GenerateJSON()
             // Create a JSON object for the player
             PlayerObject->SetStringField(TEXT("Name"), PlayerPawn->GetName());
             PlayerObject->SetStringField(TEXT("Class"), PlayerPawn->GetClass()->GetName());
-            PlayerObject->SetStringField(TEXT("Location"), PlayerPawn->GetActorLocation().ToString());
+
+            // nested location object
+            TSharedPtr<FJsonObject> PlayerLocationObject = MakeShareable(new FJsonObject());
+            FVector PlayerLocation = PlayerPawn->GetActorLocation();
+            PlayerLocationObject->SetNumberField(TEXT("X"), PlayerLocation.X);
+            PlayerLocationObject->SetNumberField(TEXT("Y"), PlayerLocation.Y);
+            PlayerLocationObject->SetNumberField(TEXT("Z"), PlayerLocation.Z);
+            PlayerObject->SetObjectField(TEXT("Location"), PlayerLocationObject);
+
+            // tags and player states ( not sure if state is nesseccary)
+            TArray<TSharedPtr<FJsonValue>> PlayerTags;
+            PlayerTags.Add(MakeShareable(new FJsonValueString(TEXT("Player"))));
+            PlayerTags.Add(MakeShareable(new FJsonValueString(TEXT("Controllable"))));
+            PlayerObject->SetArrayField(TEXT("Tags"), PlayerTags);
+
+            TSharedPtr<FJsonObject> PlayerStateObject = MakeShareable(new FJsonObject());
+            PlayerStateObject->SetNumberField(TEXT("Health"), 100); // Example value 
+            PlayerStateObject->SetStringField(TEXT("Status"), TEXT("Idle")); // Example state 
+            PlayerObject->SetObjectField(TEXT("State"), PlayerStateObject);
         }
     }
     RootObject->SetObjectField(TEXT("Player"), PlayerObject);
@@ -223,4 +159,4 @@ FString AprojectGameMode::GenerateJSON()
 
     UE_LOG(LogTemp, Log, TEXT("Generated JSON: %s"), *JSONString);
     return JSONString;
-}// Copyright Epic Games, Inc. All Rights Reserved.
+}
