@@ -1,58 +1,290 @@
 {
-  "Actors": [
+    "Actor": [
+        {
+            "Name": "WorldInfo_0",
+            "Class": "WorldSettings",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "Brush_0",
+            "Class": "Brush",
+            "Location": "X=-470.000 Y=350.000 Z=130.000"
+        },
+        {
+            "Name": "ExponentialHeightFog_0",
+            "Class": "ExponentialHeightFog",
+            "Location": "X=-5600.000 Y=-50.000 Z=-6850.000"
+        },
+        {
+            "Name": "SkyLight_0",
+            "Class": "SkyLight",
+            "Location": "X=0.000 Y=0.000 Z=690.000"
+        },
+        {
+            "Name": "StaticMeshActor_0",
+            "Class": "StaticMeshActor",
+            "Location": "X=0.000 Y=0.000 Z=-50.000"
+        },
+        {
+            "Name": "PlayerStart_0",
+            "Class": "PlayerStart",
+            "Location": "X=900.000 Y=850.000 Z=92.013"
+        },
+        {
+            "Name": "DirectionalLight_0",
+            "Class": "DirectionalLight",
+            "Location": "X=0.000 Y=0.000 Z=920.000"
+        },
+        {
+            "Name": "SkyAtmosphere_0",
+            "Class": "SkyAtmosphere",
+            "Location": "X=0.000 Y=0.000 Z=1020.000"
+        },
+        {
+            "Name": "PostProcessVolume_0",
+            "Class": "PostProcessVolume",
+            "Location": "X=100.000 Y=100.000 Z=500.000"
+        },
+        {
+            "Name": "DefaultPhysicsVolume_0",
+            "Class": "DefaultPhysicsVolume",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "GameplayDebuggerPlayerManager_0",
+            "Class": "GameplayDebuggerPlayerManager",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "ChaosDebugDrawActor",
+            "Class": "Actor",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "BP_FirstPersonGameMode_C_0",
+            "Class": "BP_FirstPersonGameMode_C",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "GameSession_0",
+            "Class": "GameSession",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "ParticleEventManager_0",
+            "Class": "ParticleEventManager",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "GameNetworkManager_0",
+            "Class": "GameNetworkManager",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "FirstPersonExampleMap_C_0",
+            "Class": "FirstPersonMap_C",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "WorldDataLayers",
+            "Class": "WorldDataLayers",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "WorldPartitionReplay",
+            "Class": "WorldPartitionReplay",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "GameStateBase_0",
+            "Class": "GameStateBase",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "AbstractNavData-Default",
+            "Class": "AbstractNavData",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "BP_FirstPersonPlayerController_C_0",
+            "Class": "BP_FirstPersonPlayerController_C",
+            "Location": "X=900.000 Y=850.000 Z=92.013"
+        },
+        {
+            "Name": "PlayerState_0",
+            "Class": "PlayerState",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "PlayerCameraManager_0",
+            "Class": "PlayerCameraManager",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "HUD_0",
+            "Class": "HUD",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "BP_FirstPersonCharacter_C_0",
+            "Class": "BP_FirstPersonCharacter_C",
+            "Location": "X=900.000 Y=850.000 Z=98.338"
+        },
+        {
+            "Name": "GameplayDebuggerCategoryReplicator_0",
+            "Class": "GameplayDebuggerCategoryReplicator",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        }
+    ],
+    "Player":
     {
-      "ActorName": "RedSphere",
-      "ClassName": "Sphere",
-      "Location": {
-        "X": 100.0,
-        "Y": 200.0,
-        "Z": 50.0
-      }
-    },
-    {
-      "ActorName": "BlueCube",
-      "ClassName": "Cube",
-      "Location": {
-        "X": -150.0,
-        "Y": 300.0,
-        "Z": 25.0
-      }
-    },
-    {
-      "ActorName": "GoldenGun",
-      "ClassName": "Gun",
-      "Location": {
-        "X": 0.0,
-        "Y": -100.0,
-        "Z": 10.0
-      }
-    },
-    {
-      "ActorName": "GroundFloor",
-      "ClassName": "Floor",
-      "Location": {
-        "X": 0.0,
-        "Y": 0.0,
-        "Z": -5.0
-      }
-    },
-    {
-      "ActorName": "BigScreen",
-      "ClassName": "Screen",
-      "Location": {
-        "X": 200.0,
-        "Y": 0.0,
-        "Z": 75.0
-      }
+        "Name": "BP_FirstPersonCharacter_C_0",
+        "Class": "BP_FirstPersonCharacter_C",
+        "Location": "X=900.000 Y=850.000 Z=98.338"
     }
-  ],
-  "Player": {
-    "PlayerName": "MainPlayer",
-    "ClassName": "PlayerCharacter",
-    "Location": {
-      "X": 50.0,
-      "Y": 50.0,
-      "Z": 0.0
+}
+LogTemp: Generated JSON: {
+    "Actor": [
+        {
+            "Name": "WorldInfo_0",
+            "Class": "WorldSettings",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "Brush_0",
+            "Class": "Brush",
+            "Location": "X=-470.000 Y=350.000 Z=130.000"
+        },
+        {
+            "Name": "ExponentialHeightFog_0",
+            "Class": "ExponentialHeightFog",
+            "Location": "X=-5600.000 Y=-50.000 Z=-6850.000"
+        },
+        {
+            "Name": "SkyLight_0",
+            "Class": "SkyLight",
+            "Location": "X=0.000 Y=0.000 Z=690.000"
+        },
+        {
+            "Name": "StaticMeshActor_0",
+            "Class": "StaticMeshActor",
+            "Location": "X=0.000 Y=0.000 Z=-50.000"
+        },
+        {
+            "Name": "PlayerStart_0",
+            "Class": "PlayerStart",
+            "Location": "X=900.000 Y=850.000 Z=92.013"
+        },
+        {
+            "Name": "DirectionalLight_0",
+            "Class": "DirectionalLight",
+            "Location": "X=0.000 Y=0.000 Z=920.000"
+        },
+        {
+            "Name": "SkyAtmosphere_0",
+            "Class": "SkyAtmosphere",
+            "Location": "X=0.000 Y=0.000 Z=1020.000"
+        },
+        {
+            "Name": "PostProcessVolume_0",
+            "Class": "PostProcessVolume",
+            "Location": "X=100.000 Y=100.000 Z=500.000"
+        },
+        {
+            "Name": "DefaultPhysicsVolume_0",
+            "Class": "DefaultPhysicsVolume",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "GameplayDebuggerPlayerManager_0",
+            "Class": "GameplayDebuggerPlayerManager",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "ChaosDebugDrawActor",
+            "Class": "Actor",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "BP_FirstPersonGameMode_C_0",
+            "Class": "BP_FirstPersonGameMode_C",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "GameSession_0",
+            "Class": "GameSession",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "ParticleEventManager_0",
+            "Class": "ParticleEventManager",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "GameNetworkManager_0",
+            "Class": "GameNetworkManager",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "FirstPersonExampleMap_C_0",
+            "Class": "FirstPersonMap_C",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "WorldDataLayers",
+            "Class": "WorldDataLayers",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "WorldPartitionReplay",
+            "Class": "WorldPartitionReplay",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "GameStateBase_0",
+            "Class": "GameStateBase",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "AbstractNavData-Default",
+            "Class": "AbstractNavData",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "BP_FirstPersonPlayerController_C_0",
+            "Class": "BP_FirstPersonPlayerController_C",
+            "Location": "X=900.000 Y=850.000 Z=92.013"
+        },
+        {
+            "Name": "PlayerState_0",
+            "Class": "PlayerState",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "PlayerCameraManager_0",
+            "Class": "PlayerCameraManager",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "HUD_0",
+            "Class": "HUD",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        },
+        {
+            "Name": "BP_FirstPersonCharacter_C_0",
+            "Class": "BP_FirstPersonCharacter_C",
+            "Location": "X=900.000 Y=850.000 Z=98.338"
+        },
+        {
+            "Name": "GameplayDebuggerCategoryReplicator_0",
+            "Class": "GameplayDebuggerCategoryReplicator",
+            "Location": "X=0.000 Y=0.000 Z=0.000"
+        }
+    ],
+    "Player":
+    {
+        "Name": "BP_FirstPersonCharacter_C_0",
+        "Class": "BP_FirstPersonCharacter_C",
+        "Location": "X=900.000 Y=850.000 Z=98.338"
     }
-  }
 }
