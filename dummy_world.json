@@ -1,145 +1,382 @@
 {
-    "Actor": [
+    "Actors": [
         {
             "Name": "WorldInfo_0",
             "Class": "WorldSettings",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "Brush_0",
             "Class": "Brush",
-            "Location": "X=-470.000 Y=350.000 Z=130.000"
+            "Location":
+            {
+                "X": -470,
+                "Y": 350,
+                "Z": 130
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "ExponentialHeightFog_0",
             "Class": "ExponentialHeightFog",
-            "Location": "X=-5600.000 Y=-50.000 Z=-6850.000"
-        },
-        {
-            "Name": "SkyLight_0",
-            "Class": "SkyLight",
-            "Location": "X=0.000 Y=0.000 Z=690.000"
+            "Location":
+            {
+                "X": -5600,
+                "Y": -50,
+                "Z": -6850
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "StaticMeshActor_0",
             "Class": "StaticMeshActor",
-            "Location": "X=0.000 Y=0.000 Z=-50.000"
-        },
-        {
-            "Name": "PlayerStart_0",
-            "Class": "PlayerStart",
-            "Location": "X=900.000 Y=850.000 Z=92.013"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": -50
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "DirectionalLight_0",
             "Class": "DirectionalLight",
-            "Location": "X=0.000 Y=0.000 Z=920.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 920
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "SkyAtmosphere_0",
             "Class": "SkyAtmosphere",
-            "Location": "X=0.000 Y=0.000 Z=1020.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 1020
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "PostProcessVolume_0",
             "Class": "PostProcessVolume",
-            "Location": "X=100.000 Y=100.000 Z=500.000"
+            "Location":
+            {
+                "X": 100,
+                "Y": 100,
+                "Z": 500
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "DefaultPhysicsVolume_0",
             "Class": "DefaultPhysicsVolume",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "GameplayDebuggerPlayerManager_0",
             "Class": "GameplayDebuggerPlayerManager",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "ChaosDebugDrawActor",
             "Class": "Actor",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "BP_FirstPersonGameMode_C_0",
             "Class": "BP_FirstPersonGameMode_C",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "GameSession_0",
             "Class": "GameSession",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "ParticleEventManager_0",
             "Class": "ParticleEventManager",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "GameNetworkManager_0",
             "Class": "GameNetworkManager",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "FirstPersonExampleMap_C_0",
             "Class": "FirstPersonMap_C",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "WorldDataLayers",
             "Class": "WorldDataLayers",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "WorldPartitionReplay",
             "Class": "WorldPartitionReplay",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "GameStateBase_0",
             "Class": "GameStateBase",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "AbstractNavData-Default",
             "Class": "AbstractNavData",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "BP_FirstPersonPlayerController_C_0",
             "Class": "BP_FirstPersonPlayerController_C",
-            "Location": "X=900.000 Y=850.000 Z=92.013"
+            "Location":
+            {
+                "X": 900,
+                "Y": 850,
+                "Z": 92.012603999999996
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "PlayerState_0",
             "Class": "PlayerState",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "PlayerCameraManager_0",
             "Class": "PlayerCameraManager",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "HUD_0",
             "Class": "HUD",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "BP_FirstPersonCharacter_C_0",
             "Class": "BP_FirstPersonCharacter_C",
-            "Location": "X=900.000 Y=850.000 Z=98.338"
+            "Location":
+            {
+                "X": 900,
+                "Y": 850,
+                "Z": 98.337501766113277
+            },
+            "Tags": [
+                "Actor"
+            ]
         },
         {
             "Name": "GameplayDebuggerCategoryReplicator_0",
             "Class": "GameplayDebuggerCategoryReplicator",
-            "Location": "X=0.000 Y=0.000 Z=0.000"
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Tags": [
+                "Actor"
+            ]
+        }
+    ],
+    "Lighting": [
+        {
+            "Name": "SkyLight_0",
+            "Class": "SkyLight",
+            "Location":
+            {
+                "X": 0,
+                "Y": 0,
+                "Z": 690
+            },
+            "Tags": [
+                "Environment",
+                "Lighting"
+            ]
+        }
+    ],
+    "Gameplay": [
+        {
+            "Name": "PlayerStart_0",
+            "Class": "PlayerStart",
+            "Location":
+            {
+                "X": 900,
+                "Y": 850,
+                "Z": 92.012603999999996
+            },
+            "Role": "Spawn Point",
+            "Tags": [
+                "Gameplay",
+                "Spawn"
+            ]
         }
     ],
     "Player":
     {
         "Name": "BP_FirstPersonCharacter_C_0",
         "Class": "BP_FirstPersonCharacter_C",
-        "Location": "X=900.000 Y=850.000 Z=98.338"
+        "Location":
+        {
+            "X": 900,
+            "Y": 850,
+            "Z": 98.337501766113277
+        },
+        "Tags": [
+            "Player",
+            "Controllable"
+        ],
+        "State":
+        {
+            "Health": 100,
+            "Status": "Idle"
+        }
     }
 }
