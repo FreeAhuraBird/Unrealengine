@@ -1,4 +1,4 @@
-#pragma once // Säkerställer att filen bara inkluderas en gång vid kompilering
+#pragma once 
 
 #include "CoreMinimal.h"        // Importerar grundläggande funktioner och typer från Unreal Engine
 #include "HttpModule.h"         // Ger stöd för HTTP-förfrågningar
@@ -16,23 +16,12 @@ class PROJECT_API AHttpHandler : public AActor
 {
     GENERATED_BODY()
 
-public:
-    /** Konstruktor - körs när klassen skapas */
-    AHttpHandler();
-
 protected:
-    /** Körs när spelet börjar eller när objektet skapas */
+
     virtual void BeginPlay() override;
 
 public:
-    /**
-     * Funktion för att skicka en HTTP POST-förfrågan
-     */
+    
     void SendHttpRequest();
 
-    /**
-     * Funktion för att generera JSON-data som ska skickas
-     * @return JSON-data som en FString
-     */
-    FString GenerateJsonData();
 };

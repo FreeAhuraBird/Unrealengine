@@ -1,69 +1,89 @@
 #include "HttpHandler.h"
 #include "HttpModule.h"
 #include "Http.h"
-#include "Json.h"
-#include "JsonUtilities.h"
+#include "projectGameMode.h"
+#include "Engine/World.h"
+#include "GameFramework/Actor.h"
 
-// Konstruktor: Aktiverar Tick-funktionen
-AHttpHandler::AHttpHandler()
-{
-    PrimaryActorTick.bCanEverTick = true; // Gör så att Tick() körs varje frame om det behövs
-}
-
-// Körs när spelet börjar eller när objektet skapas
 void AHttpHandler::BeginPlay()
 {
+    /*
+        Timer function the calls SendHttpRequest
+    */
     Super::BeginPlay();
 
-    // Startar en timer för att skicka HTTP-förfrågningar regelbundet
-    GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AHttpHandler::SendHttpRequest, 5.0f, true);
-    // Skickar en förfrågan var 5:e sekund
+    if (!GetWorld())
+    {
+        UE_LOG(LogTemp, Warning, TEXT("World is null! Cannot start timer."));
+        return;
+    }
+
+    GetWorld()->GetTimerManager().SetTimer(
+        TimerHandle,                                         // Timer handle
+        this,                                                // Calling object
+        &AHttpHandler::SendHttpRequest,                      // Function to call
+        1.0f,                                                // Delay in seconds
+        true                                                 // Repeat indefinitely
+    );
+    UE_LOG(LogTemp, Log, TEXT("Timer set: world data is collected and sent to LLM every 1 second."));
 }
 
-// Skickar en HTTP POST-förfrågan
+
 void AHttpHandler::SendHttpRequest()
 {
-    FString JsonPayload = GenerateJsonData(); // Genererar JSON-data
+    /*
+        Function calls GenerateJSON from projectGameMode.h to generate json string from world environment paramters.
+        Function then sends the return json string to LLM using api in LmStudios.
+    */
+
+    UWorld* World = GetWorld();
+    if (!World)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("World is null! Cannot get GameMode."));
+        return;
+    }
+
+    FString JSONString = TEXT("No data available") // default value
+
+    AprojectGameMode* GameMode = World->GetAuthGameMode<AprojectGameMode>();
+    if (GameMode)
+    {
+        FString JSONString = GameMode->GenerateJSON();
+
+        UE_LOG(LogTemp, Log, TEXT("Generated JSON: %s"), *JSONString);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("GameMode is not of type AprojectGameMode!"));
+    }
 
     // Skapa och konfigurera HTTP-förfrågan
     TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
-    Request->SetURL(TEXT("https://your-llm-server.com/api")); // Ersätt med din server-URL
-    Request->SetVerb(TEXT("POST"));                          // HTTP-metod är POST
-    Request->SetHeader(TEXT("Content-Type"), TEXT("application/json")); // Anger att innehållet är JSON
-    Request->SetContentAsString(JsonPayload);                // Lägger till JSON-data som innehåll
+    Request->SetURL(TEXT("https://your-llm-server.com/api")); 
+    Request->SetVerb(TEXT("POST"));
+    Request->SetHeader(TEXT("Content-Type"), TEXT("text/plain")); 
+    Request->SetContentAsString(JSONString);
 
-    // Callback som körs när svaret mottagits
+ 
     Request->OnProcessRequestComplete().BindLambda([](FHttpRequestPtr, FHttpResponsePtr Response, bool bWasSuccessful) {
         if (bWasSuccessful && Response.IsValid())
         {
-            // Loggar serverns svar
-            UE_LOG(LogTemp, Log, TEXT("LLM Response: %s"), *Response->GetContentAsString());
+            int32 ResponseCode = Response->GetResponseCode();
+            if (ResponseCode == 200)
+            {
+                UE_LOG(LogTemp, Log, TEXT("LLM Response: %s"), *Response->GetContentAsString());
+            }
+            else
+            {
+                UE_LOG(LogTemp, Error, TEXT("HTTP Request failed with response code: %d"), ResponseCode);
+            }
         }
         else
         {
-            // Loggar om förfrågan misslyckades
             UE_LOG(LogTemp, Error, TEXT("HTTP Request failed"));
         }
     });
 
-    Request->ProcessRequest(); // Skickar HTTP-förfrågan
+    Request->ProcessRequest(); 
 }
 
-// Genererar JSON-data som ska skickas
-FString AHttpHandler::GenerateJsonData()
-{
-    // Skapa ett JSON-objekt
-    TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
-    
-    // Lägg till fält i JSON-objektet
-    JsonObject->SetStringField(TEXT("player_name"), TEXT("Player1"));      // Exempel: Spelarnamn
-    JsonObject->SetNumberField(TEXT("score"), 1234);                      // Exempel: Poäng
-    JsonObject->SetNumberField(TEXT("time"), GetWorld()->GetTimeSeconds()); // Tid i spelet
-
-    // Konvertera JSON-objektet till en sträng
-    FString JsonString;
-    TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&JsonString);
-    FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
-
-    return JsonString; // Returnerar JSON som sträng
-}
