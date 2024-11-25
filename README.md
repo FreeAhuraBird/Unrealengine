@@ -1,3 +1,3 @@
-main => pusha till main när koden fungerar i openlab tillsammans med unit tests
+main => pusha till main när koden fungerar! (testad utan error)
 
 develop => ofärdig kod
