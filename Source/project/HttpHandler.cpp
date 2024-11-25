@@ -1,4 +1,4 @@
-#include "HttpHandler.h"
+#include "httpPushReq.h"
 #include "HttpModule.h"
 #include "Http.h"
 #include "projectGameMode.h"
@@ -12,6 +12,8 @@ void AHttpHandler::BeginPlay()
     */
     Super::BeginPlay();
 
+    UE_LOG(LogTemp, Log, TEXT("WEI"));
+
     if (!GetWorld())
     {
         UE_LOG(LogTemp, Warning, TEXT("World is null! Cannot start timer."));
@@ -22,7 +24,7 @@ void AHttpHandler::BeginPlay()
         TimerHandle,                                         // Timer handle
         this,                                                // Calling object
         &AHttpHandler::SendHttpRequest,                      // Function to call
-        1.0f,                                                // Delay in seconds
+        5.0f,                                                // Delay in seconds
         true                                                 // Repeat indefinitely
     );
     UE_LOG(LogTemp, Log, TEXT("Timer set: world data is collected and sent to LLM every 1 second."));
@@ -43,12 +45,13 @@ void AHttpHandler::SendHttpRequest()
         return;
     }
 
-    FString JSONString = TEXT("No data available") // default value
+    FString JSONString = TEXT("No data available"); // default value
 
-    AprojectGameMode* GameMode = World->GetAuthGameMode<AprojectGameMode>();
+    
+        AprojectGameMode * GameMode = World->GetAuthGameMode<AprojectGameMode>();
     if (GameMode)
     {
-        FString JSONString = GameMode->GenerateJSON();
+        JSONString = GameMode->GenerateJSON();
 
         UE_LOG(LogTemp, Log, TEXT("Generated JSON: %s"), *JSONString);
     }
@@ -59,12 +62,12 @@ void AHttpHandler::SendHttpRequest()
 
     // Skapa och konfigurera HTTP-förfrågan
     TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
-    Request->SetURL(TEXT("https://your-llm-server.com/api")); 
+    Request->SetURL(TEXT("http://127.0.0.1:1234/v1/chat/completions"));
     Request->SetVerb(TEXT("POST"));
-    Request->SetHeader(TEXT("Content-Type"), TEXT("text/plain")); 
+    Request->SetHeader(TEXT("Content-Type"), TEXT("text/plain"));
     Request->SetContentAsString(JSONString);
 
- 
+
     Request->OnProcessRequestComplete().BindLambda([](FHttpRequestPtr, FHttpResponsePtr Response, bool bWasSuccessful) {
         if (bWasSuccessful && Response.IsValid())
         {
@@ -82,8 +85,7 @@ void AHttpHandler::SendHttpRequest()
         {
             UE_LOG(LogTemp, Error, TEXT("HTTP Request failed"));
         }
-    });
+        });
 
-    Request->ProcessRequest(); 
+    Request->ProcessRequest();
 }
-
