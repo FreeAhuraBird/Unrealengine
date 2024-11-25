@@ -5,7 +5,7 @@
 #include "Http.h"               // Hanterar HTTP-klasser och metoder
 #include "Json.h"               // Stöd för att skapa och hantera JSON-data
 #include "JsonUtilities.h"      // Verktyg för att enkelt arbeta med JSON i Unreal Engine
-#include "HttpHandler.generated.h" // Hanterar UE-specifika funktioner för UCLASS och andra makron
+#include "httpPushReq.generated.h" // Hanterar UE-specifika funktioner för UCLASS och andra makron
 
 /**
  * Klass för att hantera HTTP-förfrågningar
@@ -14,14 +14,16 @@
 UCLASS()
 class PROJECT_API AHttpHandler : public AActor
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 protected:
 
-    virtual void BeginPlay() override;
+	virtual void BeginPlay() override;
 
 public:
-    
-    void SendHttpRequest();
+
+	void SendHttpRequest();
+
+	FTimerHandle TimerHandle;
 
 };
