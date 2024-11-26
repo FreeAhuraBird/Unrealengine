@@ -1,6 +1,7 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
+// Fill out your copyright notice in the Description page of Project Settings.
 #include "projectGameMode.h"
+// #include "httpHandle_Push.h"
+#include "WorldDataManager.h"
 #include "projectCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "GameFramework/Actor.h"
@@ -8,15 +9,15 @@
 #include "Serialization/JsonWriter.h"
 #include "Serialization/JsonSerializer.h" 
 
-/*
-    Why I've written the json-converter in the GameMode script:
-    - Here we can collect data about all actors and player in the game world.
-    - We can easily use this data and convert it into a json-format
-    - Easily log the json data to the UE console for testing
+void AprojectGameMode::BeginPlay()
+{
+    FString JSONString = GetWorldDataAsJson();
+    bool is_changed = CompareJsonStrings(JSONString);
+    UpdatePrevJson(JSONString);
 
-    JsonWriter.h - has FJsonObject (UE's own json object representation)
-    JsonSerializer.h - provides functions for loading to json string
-*/
+    if (is_changed = true)
+        HandleWorldDataChange();
+}
 
 AprojectGameMode::AprojectGameMode()
     : Super() // super() is part of C++ constructor initialzation, specifically for calling the constructor of the parent (or base) class.
@@ -28,30 +29,15 @@ AprojectGameMode::AprojectGameMode()
 
 }
 
-void AprojectGameMode::BeginPlay()
+FString AprojectGameMode::GetWorldDataAsJson()
 {
     /*
-        BeginPlay() - is called when the game starts or when this game mode is first activated.
-        GetAllActordata() - function to gather data about all actors in the game world
-        GetPlayerData() - also custom function to gather data bout the player
-        GenerateJSON() - A customer function that collects the data and formats it as a JSON string
-    */
-    Super::BeginPlay();
+       Root JSON Object - creates the root object to hold all data
+       Actors Data - Iterates through actors, creating a JSON object for each actor and adding it to an arrya
+       Player data - Creates json object for the player and adds it to the root object
+       Serialize to string - converts the json object into a string using UE's serializer
 
-    // Export to JSON
-    FString JSONString = GenerateJSON();
-    UE_LOG(LogTemp, Log, TEXT("Generated JSON: %s"), *JSONString); // log for testing and debugging
-}
-
-FString AprojectGameMode::GenerateJSON()
-{
-    /*
-        Root JSON Object - creates the root object to hold all data
-        Actors Data - Iterates through actors, creating a JSON object for each actor and adding it to an arrya
-        Player data - Creates json object for the player and adds it to the root object
-        Serialize to string - converts the json object into a string using UE's serializer
-
-    */
+   */
     TSharedPtr<FJsonObject> RootObject = MakeShareable(new FJsonObject());
     TArray<TSharedPtr<FJsonValue>> ActorsArray;
     TArray<TSharedPtr<FJsonValue>> LightingArray;
@@ -159,4 +145,36 @@ FString AprojectGameMode::GenerateJSON()
 
     UE_LOG(LogTemp, Log, TEXT("Generated JSON: %s"), *JSONString);
     return JSONString;
+}
+
+FString AprojectGameMode::GetWorldDataAsJson() {
+    return "l";
+}
+
+bool AprojectGameMode::CompareJsonStrings(FString newJson) {
+    if (newJson == prevJson) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+void AprojectGameMode::UpdatePrevJson(FString newJson) {
+    int x = 0;
+}
+
+void AprojectGameMode::HandleWorldDataChange() {
+    FString Payload = PreparePayload();
+    /*
+    
+    UHttpHandler_Get* http_push = CreateWidget<UHttpHandler_Get>(World, WidgetClass);
+
+    HttpHandlerWidget->PushPayloadPrompt(Payload);
+    
+    */
+}
+
+FString AprojectGameMode::PreparePayload() {
+    return "J";
 }
