@@ -1,0 +1,106 @@
+// Pseudokod för projektets klasser och funktioner
+
+#include <string>
+using namespace std;
+
+// Klass WorldDataManager
+class WorldDataManager {
+private:
+    string prevJson;      // Föregående JSON-sträng
+    string currentJson;   // Nuvarande JSON-sträng
+
+public:
+    // Konstruktor
+    WorldDataManager() {
+        // Initialisera prevJson och currentJson som tomma strängar
+        prevJson = "";
+        currentJson = "";
+    }
+
+    // Returnerar aktuell världsinformation som JSON-sträng
+    string GetWorldDataAsJson() {
+        // Hämta data från spelvärlden och konvertera till JSON-sträng
+        return "JsonString"; // Returnera JSON-strängen
+    }
+
+    // Jämför två JSON-strängar
+    bool CompareJsonStrings(string newJson) {
+        // Jämför föregående JSON-sträng med den nya
+        if (prevJson != newJson) {
+            return true;  // JSON-strängarna är olika
+        }
+        return false;     // JSON-strängarna är lika
+    }
+
+    // Uppdaterar föregående JSON-sträng
+    void UpdatePrevJson(string newJson) {
+        prevJson = newJson; // Uppdatera prevJson
+    }
+
+    // Hanterar ändringar i världsinformationen
+    void HandleWorldDataChange() {
+        // Kontrollera om detta är första gången data skickas
+        if (prevJson == "") {
+            UpdatePrevJson(currentJson); // Initiera prevJson med currentJson
+            return;
+        }
+        // Lägg till logik för att hantera förändringar
+    }
+
+    // Förbereder payload för HTTP-begäran
+    string PreparePayload() {
+        // Skapa ett JSON-objekt som inkluderar både prevJson och currentJson
+        return "{ 'prevJson': prevJson, 'currentJson': currentJson }";
+    }
+};
+
+// Klass HttpRequestHandler
+class HttpRequestHandler {
+public:
+    // Konstruktor
+    HttpRequestHandler() {
+        // Initialisera eventuella instansvariabler
+    }
+
+    // Skickar JSON-data till servern
+    void PostJsonData(string payload) {
+        // Skicka JSON-payload till servern
+        // 1. Skapa en HTTP POST-begäran
+        // 2. Lägg till payload i begärans kropp
+        // 3. Skicka begäran
+        // 4. Hantera svar
+    }
+};
+
+// Huvudprogrammet
+int main() {
+    // Skapa instanser av klasser
+    WorldDataManager worldDataManager;
+    HttpRequestHandler httpRequestHandler;
+
+    // Simulerar loop där ny världsinformation hanteras
+    while (true) {
+        // Hämta världens nuvarande data som JSON
+        string currentJson = worldDataManager.GetWorldDataAsJson();
+
+        // Jämför den nya JSON-strängen med den tidigare
+        if (worldDataManager.CompareJsonStrings(currentJson)) {
+            // Hantera förändringar i världens data
+            worldDataManager.HandleWorldDataChange();
+
+            // Förbered payload för att skicka till servern
+            string payload = worldDataManager.PreparePayload();
+
+            // Skicka payload till servern
+            httpRequestHandler.PostJsonData(payload);
+
+            // Uppdatera föregående JSON till det nya
+            worldDataManager.UpdatePrevJson(currentJson);
+        }
+
+        // Vänta 1 sekund innan nästa iteration
+        sleep(1); // Eller motsvarande funktion för tidsfördröjning
+    }
+
+    return 0;
+}
